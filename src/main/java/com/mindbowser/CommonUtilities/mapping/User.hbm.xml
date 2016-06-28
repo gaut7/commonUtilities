@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.mindbowser.CommonUtilities.dto">
+	<meta attribute="class-description">
+		This class contain the user details.
+	</meta>
+	<class name="UserDTO" table="user">
+		<id name="id" type="java.lang.Integer">
+			<column name="id" />
+			<generator class="increment" />
+		</id>
+
+		<property name="name" type="string">
+			<column name="name" />
+		</property>
+
+		<property name="emailId" type="string">
+			<column name="emailId" />
+		</property>
+		
+		<property name="profilePic" type="string">
+			<column name="profilePic" />
+		</property>
+		
+		<property name="deviceToken" type="string">
+			<column name="deviceToken" />
+		</property>
+		
+		<property name="password" type="string">
+			<column name="password" />
+		</property>
+		
+		<property name="googlePlusId" type="string">
+			<column name="googlePlusId" />
+		</property>
+		
+		<property name="facebookId" type="string">
+			<column name="facebookId" />
+		</property>
+		
+		<property name="twitterId" type="string">
+			<column name="twitterId" />
+		</property>
+
+		<property name="createdAt">
+			<column name="createdAt" />
+		</property>	
+		
+		<property name="updatedAt">
+			<column name="updatedAt" />
+		</property>	
+		
+		<property name="gender">
+			<column name="gender" />
+		</property>
+		
+		<property name="authToken" type="string">
+			<column name="authToken" />
+		</property>
+        		
+     </class>
+</hibernate-mapping>

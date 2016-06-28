@@ -1,0 +1,45 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+
+	<!--  Old running code code 30/12/2015 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.server.host.value}" />
+		<property name="port" value="${mail.server.port.value}" />
+		<property name="username" value="${authentication.email.id}" />
+		<property name="password" value="${authentication.password}" />
+		<property name="protocol" value="smtps" />
+		<!-- <property name="session" ref="smtpSession" /> -->
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.socketFactory.port">465</prop>
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+				<!-- <prop key="mail.smtp.starttls.enable">true</prop> -->
+				<prop key="mail.smtp.debug">true</prop>
+			</props>
+		</property>
+
+	</bean>
+
+	
+	<bean id="mail" class="com.mindbowser.CommonUtilities.util.EmailSender">
+		<property name="mailSender" ref="mailSender" />
+ 	</bean>
+	
+      	<!--  New code 30/12/2015 -->
+  	 <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+    	<property name="velocityProperties">
+        	<props>
+            	<prop key="resource.loader">class</prop>
+            	<prop key="class.resource.loader.class">
+                org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+            	</prop>
+        	</props>
+    	</property>
+  	</bean>
+
+</beans>

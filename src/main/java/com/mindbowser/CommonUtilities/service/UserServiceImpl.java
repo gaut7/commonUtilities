@@ -20,6 +20,7 @@ import com.mindbowser.CommonUtilities.util.TokenGenerator;
 import com.mindbowser.CommonUtilities.util.UserDetailValidation;
 import static com.mindbowser.CommonUtilities.constant.CommonUtilitiesConstants.DATA_MISSING_EXCEPTION;
 import static com.mindbowser.CommonUtilities.constant.CommonUtilitiesConstants.NOT_FOUND;
+import static com.mindbowser.CommonUtilities.constant.CommonUtilitiesConstants.PASSWORD_MIN_LENGTH;
 import static com.mindbowser.CommonUtilities.constant.CommonUtilitiesConstants.USER_NOT_REGISTERED;
 import static com.mindbowser.CommonUtilities.constant.CommonUtilitiesConstants.USER_ALREADY_EXIST_EXCEPTION;
 import static com.mindbowser.CommonUtilities.constant.CommonUtilitiesConstants.PASSWORD_AND_CONFIRMATION_PASSWORD_DOES_NOT_MATCH_EXCEPTION;
@@ -120,6 +121,8 @@ public class UserServiceImpl implements UserService {
 			if (userDTO2 != null) {
 			if(userModel.getFacebookId()!=null && !userModel.getFacebookId().isEmpty() )
 			{
+				if(userDTO2.getFacebookId()!=null)
+				{
 					if(userDTO2.getFacebookId().equals(userModel.getFacebookId()))
 					{
 						logger.error(ResourceManager.getMessage(FACEBOOKID_ALREADY_EXIST, null, NOT_FOUND, locale));
@@ -129,19 +132,32 @@ public class UserServiceImpl implements UserService {
 					{
 						userDTO2.setFacebookId(userModel.getFacebookId());
 					}
+				}else
+				{
+					userDTO2.setFacebookId(userModel.getFacebookId());
 				}
+			}
 				else if (userModel.getTwitterId()!=null && !userModel.getTwitterId().isEmpty()) {
-					if(userDTO2.getTwitterId().equals(userModel.getTwitterId()))
-					{
-						logger.error(ResourceManager.getMessage(TWITTERID_ALREADY_EXIST, null, NOT_FOUND, locale));
-						throw new UserException(ResourceManager.getMessage(
-								TWITTERID_ALREADY_EXIST, null, NOT_FOUND, locale));
-					}else
-					{
-						userDTO2.setTwitterId(userModel.getTwitterId());
-					}
+			if(userDTO2.getTwitterId()!=null)
+			{
+				if(userDTO2.getTwitterId().equals(userModel.getTwitterId()))
+				{
+					logger.error(ResourceManager.getMessage(TWITTERID_ALREADY_EXIST, null, NOT_FOUND, locale));
+					throw new UserException(ResourceManager.getMessage(
+							TWITTERID_ALREADY_EXIST, null, NOT_FOUND, locale));
+				}else
+				{
+					userDTO2.setTwitterId(userModel.getTwitterId());
+				}
+			}else
+			{
+				userDTO2.setTwitterId(userModel.getTwitterId());
+			}
+					
 				}
 				else if (userModel.getGooglePlusId()!=null && !userModel.getGooglePlusId().isEmpty()) {
+				if(userDTO2.getGooglePlusId()!=null)
+				{
 					if(userDTO2.getGooglePlusId().equals(userModel.getGooglePlusId()))
 					{
 						logger.error(ResourceManager.getMessage(GOOGLEPLUSID_ALREADY_EXIST, null, NOT_FOUND, locale));
@@ -151,6 +167,11 @@ public class UserServiceImpl implements UserService {
 					{
 						userDTO2.setGooglePlusId(userModel.getGooglePlusId());
 					}
+				}else
+				{
+					userDTO2.setGooglePlusId(userModel.getGooglePlusId());
+				}
+					
 				}
 				else if (userModel.getPassword()!=null && !userModel.getPassword().isEmpty()) 
 				{
@@ -173,7 +194,6 @@ public class UserServiceImpl implements UserService {
 			}
 			else
 			{
-		
 				userDTO2 = dozerMapper.map(userModel, UserDTO.class);
 				
 				if(userModel.getPassword()!=null && !userModel.getPassword().isEmpty())
@@ -220,7 +240,7 @@ public class UserServiceImpl implements UserService {
 			logger.error(ex.getStackTrace(), ex);
 		}
 		userModel = dozerMapper.map(userDTO2, UserModel.class);
-		if(!userModel.getProfilePic().isEmpty() && userModel.getProfilePic()!=null) 
+		if(userModel.getProfilePic()!=null) 
 		{
 			String profilePicUrl = ResourceManager.getProperty(CLOUD_FRONT_URL)+userModel.getProfilePic();
 			userModel.setProfilePic(profilePicUrl);	
@@ -337,7 +357,7 @@ public class UserServiceImpl implements UserService {
 		emailDTO.setTo(retrievedUser.getEmailId());
 		emailDTO.setEmailAsUserName(retrievedUser.getEmailId());
 		String tempPassword = TokenGenerator.generateToken(retrievedUser.getEmailId());
-		int passwordlimit = Integer.parseInt(ResourceManager.getProperty(PASSWORD_MAX_LENGTH));
+		int passwordlimit = Integer.parseInt(ResourceManager.getProperty(PASSWORD_MIN_LENGTH));
 		String password = tempPassword.substring(0,passwordlimit);
 		retrievedUser.setPassword(passwordUtil.encode(password));
 		emailDTO.setPassword(password);

@@ -1,2 +1,2 @@
 # commonUtilities
-basic maven project with user specific operations
+basic maven project with user specific operations.

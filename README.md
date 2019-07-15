@@ -1,2 +1,2 @@
 # commonUtilities
-basic maven project with user specific operations. This is just to test. Test1
+basic maven project with user specific operations. This is just to test.
